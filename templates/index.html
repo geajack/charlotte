@@ -2,7 +2,7 @@
 
 {% block body %}
     {% for article in articles %}
-    <article>
+    <article class="snippet">
         <header>
             <h1><a href="/articles/{{article.slug}}">{{article.title}}</a></h1>
             <legend id="author">by {{article.author}}</legend>
