@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
+    </head>
+
+    <body>
+        <form enctype="multipart/form-data" method="POST" action="/api/articles">
+            <div>
+                <label>Title: </label> <input type="text" name="title" id="title" />
+            </div>                
+            <div>
+                <label>Author: </label> <input type="text" name="author" id="author" />
+            </div>
+            <input type="file" name="content" id="content" />
+            <input type="submit" />
+        </form>
+    </body>
+
+</html>

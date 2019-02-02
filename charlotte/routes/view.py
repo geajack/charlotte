@@ -29,3 +29,7 @@ def article(slug=None):
         )
     else:
         flask.abort(404)
+
+@app.route("/upload")
+def upload():
+    return render_template("upload.html")
