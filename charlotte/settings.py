@@ -5,6 +5,7 @@ from charlotte import app
 
 def get_blog_name():
     try:
+        config_file.read(CONFIG_PATH)
         return config_file.get("blog", "Blog Name")
     except:
         app.logger.error("Could not read 'Blog Name' key in charlotte.config file")
