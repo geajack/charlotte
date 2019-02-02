@@ -3,15 +3,6 @@ import pathlib
 from configparser import ConfigParser
 from charlotte import app
 
-CONFIG_PATH = str(get_charlotte_root() / "charlotte.config")
-
-try:
-    config_file = ConfigParser()
-    config_file.read(CONFIG_PATH)
-except:
-    app.logger.error("No charlotte.config file found")
-    config_file = None
-
 def get_blog_name():
     try:
         return config_file.get("blog", "Blog Name")
@@ -21,3 +12,12 @@ def get_blog_name():
 
 def get_charlotte_root():
     return pathlib.Path(__file__).parent.parent
+
+CONFIG_PATH = str(get_charlotte_root() / "charlotte.config")
+
+try:
+    config_file = ConfigParser()
+    config_file.read(CONFIG_PATH)
+except:
+    app.logger.error("No charlotte.config file found")
+    config_file = None
