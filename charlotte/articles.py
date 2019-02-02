@@ -104,7 +104,7 @@ def post_article(title, author, content):
     cursor = connection.execute("SELECT last_insert_rowid()")
     rows = cursor.fetchall()
     new_id = rows[0][0]
-    f = open("articles/{article_id}.md".format(article_id=new_id), "w")
+    f = open("articles/{article_id}.md".format(article_id=new_id), "wb")
     f.write(content)
     f.close()
     connection.close()

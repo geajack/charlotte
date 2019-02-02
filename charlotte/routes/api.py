@@ -13,5 +13,7 @@ def post_article():
         content = request.files["content"].read()
     except:
         flask.abort(400)
+    else:
+        articles.post_article(title, author, content)
 
     return ""
