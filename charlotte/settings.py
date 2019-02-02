@@ -3,7 +3,7 @@ import pathlib
 from configparser import ConfigParser
 from charlotte import app
 
-CONFIG_PATH = str(pathlib.Path(__file__).parent.parent / "charlotte.config")
+CONFIG_PATH = str(get_charlotte_root() / "charlotte.config")
 
 try:
     config_file = ConfigParser()
@@ -18,3 +18,6 @@ def get_blog_name():
     except:
         app.logger.error("Could not read 'Blog Name' key in charlotte.config file")
         return "A Charlotte Blog"
+
+def get_charlotte_root():
+    return pathlib.Path(__file__).parent.parent
