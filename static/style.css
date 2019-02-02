@@ -1,0 +1,49 @@
+body
+{
+    width: 800px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1
+{
+    font-size: 30pt;
+}
+
+article
+{
+    border: 1px solid grey;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+article header
+{
+    position: relative;
+}
+
+article header h1
+{
+    font-size: 16pt;
+    text-decoration: underline;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+article header legend
+{
+    display: inline;
+    font-size: 0.75em;
+}
+
+article header legend#date
+{
+    position: absolute;
+    right: 0px;    
+}
+
+article main
+{
+    text-align: justify;
+}

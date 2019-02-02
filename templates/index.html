@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {% for article in articles %}
+    <article>
+        <header>
+            <h1><a href="/articles/{{article.slug}}">{{article.title}}</a></h1>
+            <legend id="author">by {{article.author}}</legend>
+            <legend id="date">posted on {{article.date}}</legend>
+        </header>
+
+        <main>
+            {{article.get_html() | safe}} 
+        </main>
+    </article>
+    {% endfor %}
+{% endblock %}
