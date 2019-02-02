@@ -14,7 +14,7 @@ class Article:
         self.slug = slug
 
     def get_raw_content(self):
-        f = open("articles/{article_id}.md".format(article_id=self.id))
+        f = open("articles/{slug}.md".format(slug=self.slug))
         content = f.read()
         f.close()
         return content
@@ -114,7 +114,7 @@ def post_article(title, author, content):
     cursor = connection.execute("SELECT last_insert_rowid()")
     rows = cursor.fetchall()
     new_id = rows[0][0]
-    f = open("articles/{article_id}.md".format(article_id=new_id), "wb")
+    f = open("articles/{slug}.md".format(slug=slug), "wb")
     f.write(content)
     f.close()
     connection.close()
