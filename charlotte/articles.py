@@ -39,7 +39,8 @@ def initialize():
     )
     connection.close()
 
-    settings.get_charlotte_root().mkdir("articles", exist_ok=True)
+    charlotte_root = settings.get_charlotte_root()
+    (charlotte_root / "articles").mkdir(exist_ok=True)
 
 def slug_from_title(title):
     return slugify.slugify(title)
