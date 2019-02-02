@@ -30,7 +30,7 @@ def initialize_database():
                 id integer PRIMARY KEY,
                 title text NOT NULL,
                 author text,
-                date date,
+                date datetime,
                 slug text UNIQUE
             );
         """
@@ -58,7 +58,12 @@ def unique_slug_from_title(title):
 
 def get_all_articles():
     connection = sqlite3.connect("database.db")
-    cursor = connection.execute("SELECT id, title, author, date, slug FROM articles")
+    cursor = connection.execute(
+        """
+        SELECT id, title, author, date, slug FROM articles
+        ORDER BY date DESC
+        """
+    )
     rows = cursor.fetchall()
     connection.close()
 
@@ -92,7 +97,7 @@ def post_article(title, author, content):
         INSERT INTO articles
             (id, title, author, date, slug)
         VALUES
-            (null, :title, :author, date('now'), :slug)
+            (null, :title, :author, datetime('now'), :slug)
         """
     parameters = \
         { 
