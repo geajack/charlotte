@@ -2,6 +2,8 @@ import sqlite3
 import markdown
 import slugify
 
+from charlotte import settings
+
 class Article:
 
     def __init__(self, article_id, title, author, date, slug):
@@ -21,7 +23,7 @@ class Article:
         raw = self.get_raw_content()
         return markdown.markdown(raw)
 
-def initialize_database():
+def initialize():
     connection = sqlite3.connect("database.db")
     connection.execute(
         """
@@ -36,6 +38,8 @@ def initialize_database():
         """
     )
     connection.close()
+
+    settings.get_charlotte_root().mkdir("articles", exist_ok=True)
 
 def slug_from_title(title):
     return slugify.slugify(title)
@@ -114,4 +118,4 @@ def post_article(title, author, content):
     f.close()
     connection.close()
 
-initialize_database()
+initialize()
