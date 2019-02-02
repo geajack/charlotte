@@ -1,10 +1,9 @@
-from flask import Flask, render_template, Markup
+from flask import render_template, Markup
 import flask
 
-import articles
-import settings
-
-app = Flask("Charlotte")
+from charlotte import app
+from charlotte import articles
+from charlotte import settings
 
 @app.context_processor
 def inject():
@@ -15,7 +14,6 @@ def inject():
 @app.route("/")
 def index():
     all_articles = articles.get_all_articles()
-    print(all_articles)
     return render_template("index.html", articles=all_articles)
 
 @app.route("/articles/<slug>")
