@@ -1,8 +1,8 @@
 import sqlite3
-import markdown
 import slugify
 
 from charlotte import settings
+from charlotte.renderers import mathdown
 
 class Article:
 
@@ -21,7 +21,7 @@ class Article:
 
     def get_html(self):
         raw = self.get_raw_content()
-        return markdown.markdown(raw)
+        return mathdown.render(raw)
 
 def initialize():
     connection = sqlite3.connect("database.db")
