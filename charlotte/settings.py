@@ -1,8 +1,13 @@
+import pathlib
+
 from configparser import ConfigParser
 from charlotte import app
 
+CONFIG_PATH = str(pathlib.Path(__file__).parent.parent / "charlotte.config")
+
 try:
-    config_file = ConfigParser("charlotte.config")
+    config_file = ConfigParser()
+    config_file.read(CONFIG_PATH)
 except:
     app.logger.error("No charlotte.config file found")
     config_file = None
