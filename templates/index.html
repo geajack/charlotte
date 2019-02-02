@@ -10,7 +10,7 @@
         </header>
 
         <main>
-            {{article.get_html() | safe}} 
+            {{article.get_content_html() | safe}} 
         </main>
     </article>
     {% endfor %}

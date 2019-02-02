@@ -12,6 +12,7 @@ class Article:
         self.author = author
         self.date = date
         self.slug = slug
+        self.renderer = mathdown
 
     def get_raw_content(self):
         f = open("articles/{slug}.md".format(slug=self.slug))
@@ -19,9 +20,12 @@ class Article:
         f.close()
         return content
 
-    def get_html(self):
+    def get_content_html(self):
         raw = self.get_raw_content()
         return mathdown.render(raw)
+
+    def get_head_html(self):
+        return mathdown.head()
 
 def initialize():
     connection = sqlite3.connect("database.db")
