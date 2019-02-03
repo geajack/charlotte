@@ -56,8 +56,6 @@ body > footer a
 
 article.snippet
 {
-    max-height: 200px;
-    overflow: hidden;
     position: relative;
 }
 article.snippet::after
@@ -67,6 +65,16 @@ article.snippet::after
     bottom: 0px;
     width: 100%;
     height: 20px;
+}
+
+article.snippet main
+{
+    max-height: 215px;
+    overflow-y: hidden;
+    mask-image: linear-gradient(black 50px, transparent 220px);
+    mask-size: 100% 100%;
+    mask-position-y: bottom 0px;
+    mask-repeat: no-repeat;
 }
 
 article
