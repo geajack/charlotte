@@ -13,6 +13,13 @@ class Format:
         self.renderer_name = renderer_name
         self.description = description
 
+    def as_api_entity(self):
+        return {
+            "identifier": self.identifier,
+            "name": self.name,
+            "description": self.description
+        }
+
 def get_format(identifier):
     try:
         formats = get_formats()

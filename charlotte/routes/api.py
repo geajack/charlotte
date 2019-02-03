@@ -43,4 +43,6 @@ def update_article(article_id):
 
 @app.route("/api/formats", methods=["GET"])
 def get_formats():
-    pass
+    formats = settings.get_formats()
+    api_entities = [format_object.as_api_entity() for format_object in formats]
+    return flask.jsonify(api_entities)
