@@ -60,6 +60,7 @@ def article(slug=None):
             title=article.title,
             author=article.author,
             date=article.date,
+            format=article.article_format,
             content=Markup(article.get_content_html()),
             renderer_head=Markup(article.get_head_html())
         )

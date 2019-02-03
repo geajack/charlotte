@@ -14,7 +14,7 @@
                 <legend id="date">posted on {{article.date}}</legend>
             </header>
 
-            <main>
+            <main class="{{article.article_format}}-format">
                 {{article.get_content_html() | safe}} 
             </main>
         </article>
