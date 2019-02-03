@@ -5,6 +5,41 @@ import yaml
 
 from charlotte import app
 
+class Format:
+
+    def __init__(self, identifier, name, renderer_name, description):
+        self.identifier = identifier
+        self.name = name
+        self.renderer_name = renderer_name
+        self.description = description
+
+def get_format(identifier):
+    try:
+        formats = get_formats()
+        for format_object in formats:
+            if identifier == format_object.identifier:
+                return format_object
+        return None
+    except Exception as exception:
+        app.logger.error("Could not get formats from charlotte.config file: {}".format(exception))
+        return None
+
+def get_formats():
+    try:
+        config = get_config()
+        yaml_formats = config["formats"]
+        formats = []
+        for yaml_format in yaml_formats:
+            identifier = yaml_format["identifier"]
+            name = yaml_format["name"]
+            renderer_name = yaml_format["renderer"]
+            description = yaml_format["description"]
+            formats.append(Format(identifier, name, renderer_name, description))
+        return formats
+    except Exception as exception:
+        app.logger.error("Could not get formats from charlotte.config file: {}".format(exception))
+        return []
+
 def get_blog_name():
     try:
         config = get_config()
