@@ -34,8 +34,9 @@ def get_article(article_id):
         flask.abort(404)
 
 @app.route("/api/articles/<article_id>", methods=["DELETE"])
-def delete_article(article_id):
-    pass
+def delete_article(article_id):    
+    articles.delete_article(article_id)
+    return ""
 
 @app.route("/api/articles/<article_id>", methods=["PATCH"])
 def update_article(article_id):

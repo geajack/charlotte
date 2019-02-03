@@ -1,6 +1,8 @@
+import os
 import sqlite3
 import slugify
 
+from charlotte import app
 from charlotte import settings
 from charlotte import renderers
 
@@ -28,6 +30,9 @@ class Article:
     def get_head_html(self):
         if hasattr(self.renderer, "head"):
             return self.renderer.head()
+
+    def get_file_path(self):
+        return "articles/{slug}.md".format(slug=self.slug)
 
     def as_api_entity(self):
         dictionary = {
@@ -182,7 +187,7 @@ def post_article(title, author, article_format, content):
         { 
             "title": title, "author": author, "slug": slug, "article_format": article_format
         }
-    cursor = connection.execute(query, parameters)
+    connection.execute(query, parameters)
     connection.commit()    
 
     cursor = connection.execute("SELECT last_insert_rowid()")
@@ -192,5 +197,22 @@ def post_article(title, author, article_format, content):
     f.write(content)
     f.close()
     connection.close()
+
+def delete_article(article_id):
+    try:
+        article = get_article_by_id(article_id)
+        article_file = article.get_file_path()
+
+        connection = sqlite3.connect("database.db")
+        query = "DELETE FROM articles WHERE id = :id"
+        parameters = { "id": article_id }
+        connection.execute(query, parameters)
+        connection.commit()
+        
+        os.remove(article_file)
+    except Exception as exception:
+        app.logger.error("Could not delete article {article_id}: {exception}".format(article_id=article_id, exception=exception))
+    finally:
+        connection.close()
 
 initialize()
