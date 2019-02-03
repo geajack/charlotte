@@ -53,7 +53,7 @@ def index(page="1"):
 
 @app.route("/articles/<slug>")
 def article(slug=None):
-    article = articles.get_article(slug)
+    article = articles.get_article_by_slug(slug)
     if article is not None:
         return render_template(
             "blog/article.jinja",
