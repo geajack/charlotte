@@ -18,7 +18,7 @@ class Article:
         self.renderer = renderers.get_renderer(article_format)
 
     def get_raw_content(self):
-        f = open("articles/{slug}.md".format(slug=self.slug))
+        f = open("articles/{slug}".format(slug=self.slug))
         content = f.read()
         f.close()
         return content
@@ -32,7 +32,7 @@ class Article:
             return self.renderer.head()
 
     def get_file_path(self):
-        return "articles/{slug}.md".format(slug=self.slug)
+        return "articles/{slug}".format(slug=self.slug)
 
     def as_api_entity(self):
         dictionary = {
@@ -89,6 +89,22 @@ def unique_slug_from_title(title):
     connection.close()
 
     slugs = [row[0] for row in rows]
+    n = 2
+    unique_slug = slug
+    while unique_slug in slugs:
+        unique_slug = slug + "-" + str(n)
+        n += 1
+    return unique_slug
+
+def updated_unique_slug(article_id, title):
+    slug = slug_from_title(title)
+    
+    connection = sqlite3.connect("database.db")
+    cursor = connection.execute("SELECT id, slug FROM articles")
+    rows = cursor.fetchall()
+    connection.close()
+
+    slugs = [row[1] for row in rows if row[0] != article_id]
     n = 2
     unique_slug = slug
     while unique_slug in slugs:
@@ -193,7 +209,7 @@ def post_article(title, author, article_format, content):
     cursor = connection.execute("SELECT last_insert_rowid()")
     rows = cursor.fetchall()
     new_id = rows[0][0]
-    f = open("articles/{slug}.md".format(slug=slug), "wb")
+    f = open("articles/{slug}".format(slug=slug), "wb")
     f.write(content)
     f.close()
     connection.close()
@@ -214,5 +230,46 @@ def delete_article(article_id):
         app.logger.error("Could not delete article {article_id}: {exception}".format(article_id=article_id, exception=exception))
     finally:
         connection.close()
+
+def update_article(article_id, title=None, author=None, format=None, content=None):
+    article = get_article_by_id(article_id)
+
+    if title is not None:
+        slug = updated_unique_slug(article_id, title)
+        old_file = article.get_file_path()
+        os.rename(old_file, "articles/{slug}".format(slug=slug))
+    else:
+        slug = article.slug
+
+    if content is not None:
+        f = open("articles/{slug}".format(slug=slug), "wb")
+        f.write(content)
+        f.close()
+
+    try:
+        connection = sqlite3.connect("database.db")    
+        query = """
+            UPDATE articles
+            SET
+                title = COALESCE(:title, title),
+                author = COALESCE(:author, author),
+                format = COALESCE(:format, format),
+                slug = COALESCE(:slug, slug)
+            WHERE
+                id = :article_id
+            """
+        parameters = {
+            "article_id": article_id,
+            "title": title,
+            "author": author,
+            "format": format,
+            "slug": slug,
+            "content": content
+        }
+        connection.execute(query, parameters)
+        connection.commit()
+    finally:
+        connection.close()
+    
 
 initialize()

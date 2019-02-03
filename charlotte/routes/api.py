@@ -40,7 +40,18 @@ def delete_article(article_id):
 
 @app.route("/api/articles/<article_id>", methods=["PATCH"])
 def update_article(article_id):
-    pass
+    title = request.form.get("title", None)
+    author = request.form.get("author", None)
+    article_format = request.form.get("format", None)
+
+    try:
+        content = request.files["content"].read()
+    except:
+        content = None
+    
+    articles.update_article(article_id, title=title, author=author, format=article_format, content=content)
+
+    return ""
 
 @app.route("/api/formats", methods=["GET"])
 def get_formats():
