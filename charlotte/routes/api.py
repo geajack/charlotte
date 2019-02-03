@@ -7,7 +7,9 @@ from charlotte import articles
 
 @app.route("/api/articles", methods=["GET"])
 def get_articles():
-    return []
+    all_articles = articles.get_all()
+    api_entities = [article.as_api_header_entity() for article in all_articles]
+    return flask.jsonify(api_entities)
 
 @app.route("/api/articles", methods=["POST"])
 def post_article():

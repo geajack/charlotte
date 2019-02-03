@@ -41,6 +41,17 @@ class Article:
         }
         return dictionary
 
+    def as_api_header_entity(self):
+        dictionary = {
+            "id": self.id,
+            "title": self.title,
+            "author": self.author,
+            "date": self.date,
+            "slug": self.slug,
+            "format": self.article_format
+        }
+        return dictionary
+
 def initialize():
     connection = sqlite3.connect("database.db")
     connection.execute(
@@ -88,6 +99,23 @@ def how_many():
     number = row[0]
     return number
 
+def get_all():
+    connection = sqlite3.connect("database.db")
+    query = """
+        SELECT id, title, author, format, date, slug FROM articles
+        ORDER BY date DESC
+    """
+    cursor = connection.execute(query)
+    rows = cursor.fetchall()
+    connection.close()
+
+    articles = []
+    for row in rows:
+        article_id, title, author, article_format, date, slug = row
+        article = Article(article_id, title, author, article_format, date, slug)
+        articles.append(article)
+
+    return articles
 
 def get_latest_articles(skip, number):
     connection = sqlite3.connect("database.db")
