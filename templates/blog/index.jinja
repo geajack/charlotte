@@ -1,5 +1,9 @@
 {% extends "blog/base.jinja" %}
 
+{% block page_head %}
+    <link rel="stylesheet" href="{{url_for('static', filename='blog/index.css')}}" />
+{% endblock page_head %}
+
 {% block body %}
     {% for article in articles %}
     <article class="snippet">
