@@ -5,26 +5,29 @@
 {% endblock page_head %}
 
 {% block body %}
-    {% for article in articles %}
-    <article class="snippet">
-        <header>
-            <h1><a href="/articles/{{article.slug}}">{{article.title}}</a></h1>
-            <legend id="author">by {{article.author}}</legend>
-            <legend id="date">posted on {{article.date}}</legend>
-        </header>
+    <div class="index">
+        {% for article in articles %}
+        <article class="snippet">
+            <header>
+                <h1><a href="/articles/{{article.slug}}">{{article.title}}</a></h1>
+                <legend id="author">by {{article.author}}</legend>
+                <legend id="date">posted on {{article.date}}</legend>
+            </header>
 
-        <main>
-            {{article.get_content_html() | safe}} 
-        </main>
-    </article>
-    {% endfor %}
+            <main>
+                {{article.get_content_html() | safe}} 
+            </main>
+        </article>
+        {% endfor %}
 
-    {% if previous_page != None %}
-        <a href="/{{previous_page}}">Newer</a>
-    {% endif %}
+        <footer>
+            {% if previous_page != None %}
+                <a href="/{{previous_page}}" class="page-link newer">Newer</a>
+            {% endif %}
 
-    {% if next_page != None %}
-        <a href="/{{next_page}}">Older</a>
-    {% endif %}
-
+            {% if next_page != None %}
+                <a href="/{{next_page}}" class="page-link older">Older</a>
+            {% endif %}
+        </footer>
+    </div>
 {% endblock %}

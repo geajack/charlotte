@@ -1,0 +1,48 @@
+.index footer
+{
+    position: relative;
+    width: 100%;
+    height: 20px;
+}
+
+.page-link
+{
+    text-decoration: none;
+    font-variant: small-caps;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 5px;
+    padding: 3px;
+    position: relative;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.page-link:active
+{
+    box-shadow: none;    
+}
+
+.older
+{
+    position: absolute;
+    right: 0px;
+}
+
+.older:active
+{
+    right: -2px;
+    top: 2px;
+}
+
+.newer
+{
+    position: absolute;
+    left: 0px;
+}
+
+.newer:active
+{
+    left: 2px;
+    top: 2px;
+}
