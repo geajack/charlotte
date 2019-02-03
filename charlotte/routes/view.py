@@ -12,21 +12,42 @@ def inject():
     }
 
 @app.route("/")
-def index():
-    all_articles = articles.get_all_articles()
+@app.route("/<page>")
+def index(page="1"):
+    page = int(page)
+    number = 10
+    skip = (page - 1) * number
+    visible_articles = articles.get_latest_articles(skip, number)
+
+    number_of_articles = articles.how_many()
+    number_of_pages = int(number_of_articles / number) + 1
+    previous_page = None
+    next_page = None
+    if page < number_of_pages:
+        next_page = page + 1
+    if page > 1:
+        previous_page = page - 1
+
     head = ""
-    renderers = set([article.renderer for article in all_articles])
+    renderers = set([article.renderer for article in visible_articles])
     for renderer in renderers:
         head += renderer.head()
         head += "\n"
-    return render_template("index.html", articles=all_articles, head=Markup(head))
+
+    return render_template(
+        "blog/index.html",
+        articles=visible_articles,
+        head=Markup(head),
+        next_page=next_page,
+        previous_page=previous_page
+    )
 
 @app.route("/articles/<slug>")
 def article(slug=None):
     article = articles.get_article(slug)
     if article is not None:
         return render_template(
-            "article.html",
+            "blog/article.html",
             title=article.title,
             author=article.author,
             date=article.date,
@@ -38,4 +59,4 @@ def article(slug=None):
 
 @app.route("/upload")
 def upload():
-    return render_template("upload.html")
+    return render_template("client/upload.html")

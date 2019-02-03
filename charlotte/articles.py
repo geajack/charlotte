@@ -65,14 +65,27 @@ def unique_slug_from_title(title):
         n += 1
     return unique_slug
 
-def get_all_articles():
+def how_many():
     connection = sqlite3.connect("database.db")
-    cursor = connection.execute(
-        """
+    cursor = connection.execute("SELECT COUNT(*) FROM articles")
+    row = cursor.fetchone()
+    connection.close()
+    number = row[0]
+    return number
+
+
+def get_latest_articles(skip, number):
+    connection = sqlite3.connect("database.db")
+    query = """
         SELECT id, title, author, date, slug FROM articles
         ORDER BY date DESC
-        """
-    )
+        LIMIT :skip, :number
+    """
+    parameters = {
+        "skip": skip,
+        "number": number
+    }
+    cursor = connection.execute(query, parameters)
     rows = cursor.fetchall()
     connection.close()
 

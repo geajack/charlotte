@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 {% block body %}
     {% for article in articles %}
@@ -14,4 +14,13 @@
         </main>
     </article>
     {% endfor %}
+
+    {% if previous_page != None %}
+        <a href="/{{previous_page}}">Newer</a>
+    {% endif %}
+
+    {% if next_page != None %}
+        <a href="/{{next_page}}">Older</a>
+    {% endif %}
+
 {% endblock %}
