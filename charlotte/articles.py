@@ -2,17 +2,18 @@ import sqlite3
 import slugify
 
 from charlotte import settings
-from charlotte.renderers import mathdown
+from charlotte import renderers
 
 class Article:
 
-    def __init__(self, article_id, title, author, date, slug):
+    def __init__(self, article_id, title, author, article_format, date, slug):
         self.id = article_id
         self.title = title
         self.author = author
+        self.article_format = article_format
         self.date = date
         self.slug = slug
-        self.renderer = mathdown
+        self.renderer = renderers.get_renderer(article_format)
 
     def get_raw_content(self):
         f = open("articles/{slug}.md".format(slug=self.slug))
@@ -22,10 +23,11 @@ class Article:
 
     def get_content_html(self):
         raw = self.get_raw_content()
-        return mathdown.render(raw)
+        return self.renderer.render(raw)
 
     def get_head_html(self):
-        return mathdown.head()
+        if hasattr(self.renderer, "head"):
+            return self.renderer.head()
 
 def initialize():
     connection = sqlite3.connect("database.db")
@@ -36,6 +38,7 @@ def initialize():
                 id integer PRIMARY KEY,
                 title text NOT NULL,
                 author text,
+                format text,
                 date datetime,
                 slug text UNIQUE
             );
@@ -77,7 +80,7 @@ def how_many():
 def get_latest_articles(skip, number):
     connection = sqlite3.connect("database.db")
     query = """
-        SELECT id, title, author, date, slug FROM articles
+        SELECT id, title, author, format, date, slug FROM articles
         ORDER BY date DESC
         LIMIT :skip, :number
     """
@@ -91,39 +94,39 @@ def get_latest_articles(skip, number):
 
     articles = []
     for row in rows:
-        article_id, title, author, date, slug = row
-        article = Article(article_id, title, author, date, slug)
+        article_id, title, author, article_format, date, slug = row
+        article = Article(article_id, title, author, article_format, date, slug)
         articles.append(article)
 
     return articles
 
 def get_article(slug):
     connection = sqlite3.connect("database.db")
-    query = "SELECT id, title, author, date FROM articles WHERE slug = :slug"
+    query = "SELECT id, title, author, format, date FROM articles WHERE slug = :slug"
     parameters = { "slug" : slug }
     cursor = connection.execute(query, parameters)
     rows = cursor.fetchall()
     connection.close()
 
     if len(rows) > 0:
-        article_id, title, author, date = rows[0]
-        return Article(article_id, title, author, date, slug)
+        article_id, title, author, article_format, date = rows[0]
+        return Article(article_id, title, author, article_format, date, slug)
     else:
         return None
 
-def post_article(title, author, content):
+def post_article(title, author, article_format, content):
     slug = unique_slug_from_title(title)
     connection = sqlite3.connect("database.db")
     query = \
         """
         INSERT INTO articles
-            (id, title, author, date, slug)
+            (id, title, author, format, date, slug)
         VALUES
-            (null, :title, :author, datetime('now'), :slug)
+            (null, :title, :author, :article_format, datetime('now'), :slug)
         """
     parameters = \
         { 
-            "title": title, "author": author, "slug": slug
+            "title": title, "author": author, "slug": slug, "article_format": article_format
         }
     cursor = connection.execute(query, parameters)
     connection.commit()    

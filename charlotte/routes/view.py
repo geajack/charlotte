@@ -39,8 +39,9 @@ def index(page="1"):
         head = ""
         renderers = set([article.renderer for article in visible_articles])
         for renderer in renderers:
-            head += renderer.head()
-            head += "\n"
+            if hasattr(renderer, "head"):
+                head += renderer.head()
+                head += "\n"
 
         return render_template(
             "blog/index.jinja",
