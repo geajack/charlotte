@@ -6,6 +6,10 @@
 
 {% block body %}
     <div class="index">
+        {% if articles | length == 0 %}
+            <span class="no-articles">There are no articles!</span>
+        {% endif %}
+
         {% for article in articles %}
         <article class="snippet">
             <header>

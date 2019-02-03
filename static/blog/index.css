@@ -47,3 +47,10 @@
     left: 2px;
     top: 2px;
 }
+
+.no-articles
+{
+    display: block;
+    margin: auto;
+    text-align: center;
+}
