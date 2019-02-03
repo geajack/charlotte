@@ -1,14 +1,17 @@
 :root
 {
-    background-image: url('/static/background.jpg');
+    background-color: rgb(248, 247, 226);
+    background-image: url('/static/epeiradiadema.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: 100%;
+    background-size: auto 90%;
+    background-position: -50px 0px;
+    padding: 0px 25px;
 }
 
 body
 {
-    width: 900px;
+    max-width: 900px;
     margin: auto;
     padding-bottom: 50px;
     font-family: 'Noto Serif', serif;    
@@ -16,9 +19,8 @@ body
 
 body > h1
 {
-    font-size: 30pt;
-    color: white;
-    background: rgba(0, 0, 0, 0.65);
+    font-size: 35pt;
+    color: black;
     border-radius: 10px;
     padding: 5px;
     display: inline-block;
@@ -121,4 +123,5 @@ article img
 {
     margin: auto;
     display: block;
+    max-width: 100%;
 }
