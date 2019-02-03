@@ -14,33 +14,41 @@ def inject():
 @app.route("/")
 @app.route("/<page>")
 def index(page="1"):
-    page = int(page)
-    number = 10
-    skip = (page - 1) * number
-    visible_articles = articles.get_latest_articles(skip, number)
+    try:
+        page = int(page)
+    except:
+        flask.abort(404)
 
+    articles_per_page = 10
     number_of_articles = articles.how_many()
-    number_of_pages = int(number_of_articles / number) + 1
-    previous_page = None
-    next_page = None
-    if page < number_of_pages:
-        next_page = page + 1
-    if page > 1:
-        previous_page = page - 1
+    number_of_pages = int(number_of_articles / articles_per_page) + 1
 
-    head = ""
-    renderers = set([article.renderer for article in visible_articles])
-    for renderer in renderers:
-        head += renderer.head()
-        head += "\n"
+    if page < 1 or page > number_of_pages:
+        return flask.redirect("/")
+    else:
+        skip = (page - 1) * articles_per_page
+        visible_articles = articles.get_latest_articles(skip, articles_per_page)
+        
+        previous_page = None
+        next_page = None
+        if page < number_of_pages:
+            next_page = page + 1
+        if page > 1:
+            previous_page = page - 1
 
-    return render_template(
-        "blog/index.jinja",
-        articles=visible_articles,
-        renderer_head=Markup(head),
-        next_page=next_page,
-        previous_page=previous_page
-    )
+        head = ""
+        renderers = set([article.renderer for article in visible_articles])
+        for renderer in renderers:
+            head += renderer.head()
+            head += "\n"
+
+        return render_template(
+            "blog/index.jinja",
+            articles=visible_articles,
+            renderer_head=Markup(head),
+            next_page=next_page,
+            previous_page=previous_page
+        )
 
 @app.route("/articles/<slug>")
 def article(slug=None):
