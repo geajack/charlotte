@@ -35,7 +35,7 @@ def index(page="1"):
         head += "\n"
 
     return render_template(
-        "blog/index.html",
+        "blog/index.jinja",
         articles=visible_articles,
         head=Markup(head),
         next_page=next_page,
@@ -47,16 +47,16 @@ def article(slug=None):
     article = articles.get_article(slug)
     if article is not None:
         return render_template(
-            "blog/article.html",
+            "blog/article.jinja",
             title=article.title,
             author=article.author,
             date=article.date,
-            content=Markup(article.get_content_html()),
-            head=Markup(article.get_head_html())
+            content=Markup(article.get_content.jinja()),
+            head=Markup(article.get_head.jinja())
         )
     else:
         flask.abort(404)
 
 @app.route("/upload")
 def upload():
-    return render_template("client/upload.html")
+    return render_template("client/upload.jinja")
