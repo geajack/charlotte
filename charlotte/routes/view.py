@@ -66,8 +66,3 @@ def article(slug=None):
         )
     else:
         flask.abort(404)
-
-@app.route("/upload")
-def upload():
-    formats = settings.get_formats()
-    return render_template("client/upload.jinja", formats=formats)

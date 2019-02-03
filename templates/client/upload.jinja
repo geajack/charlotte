@@ -1,31 +1,24 @@
-<!DOCTYPE html>
+{% extends "client/base.jinja" %}
 
-<html>
-
-    <head>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-        <link rel="stylesheet" href="{{url_for('static', filename='client/style.css')}}" />
-    </head>
-
-    <body>
-        <form enctype="multipart/form-data" method="POST" action="/api/articles">
-            <div>
-                <label>Title: </label> <input type="text" name="title" id="title" />
-            </div>                
-            <div>
-                <label>Author: </label> <input type="text" name="author" id="author" />
-            </div>
-            <div>
-                <label>Format: </label>
-                <select name="format">
-                    {% for format in formats %}                    
-                        <option value="{{format.identifier}}">{{format.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <input type="file" name="content" id="content" />
-            <input type="submit" value="Upload" />
-        </form>
-    </body>
-
-</html>
+{% block body %}
+    <form enctype="multipart/form-data" method="POST" action="/client">
+        <input type="hidden" name="action" value="new" />
+        <h1>Post new article</h1>
+        <div>
+            <label>Title: </label> <input type="text" name="title" id="title" />
+        </div>                
+        <div>
+            <label>Author: </label> <input type="text" name="author" id="author" />
+        </div>
+        <div>
+            <label>Format: </label>
+            <select name="format">
+                {% for format in formats %}                    
+                    <option value="{{format.identifier}}">{{format.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input type="file" name="content" id="content" />
+        <input type="submit" value="Upload" />
+    </form>
+{% endblock body %}

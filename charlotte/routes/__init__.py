@@ -1,1 +1,1 @@
-from charlotte.routes import view, api
+from charlotte.routes import view, api, client
