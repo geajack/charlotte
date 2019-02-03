@@ -69,4 +69,5 @@ def article(slug=None):
 
 @app.route("/upload")
 def upload():
-    return render_template("client/upload.jinja")
+    formats = settings.get_formats()
+    return render_template("client/upload.jinja", formats=formats)

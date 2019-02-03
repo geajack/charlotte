@@ -18,8 +18,9 @@
             <div>
                 <label>Format: </label>
                 <select name="format">
-                    <option value="mathdown">Mathdown</option>
-                    <option value="plain">Plain text</option>
+                    {% for format in formats %}                    
+                        <option value="{{format.identifier}}">{{format.name}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <input type="file" name="content" id="content" />
