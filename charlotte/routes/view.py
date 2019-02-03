@@ -37,7 +37,7 @@ def index(page="1"):
     return render_template(
         "blog/index.jinja",
         articles=visible_articles,
-        head=Markup(head),
+        renderer_head=Markup(head),
         next_page=next_page,
         previous_page=previous_page
     )
@@ -51,8 +51,8 @@ def article(slug=None):
             title=article.title,
             author=article.author,
             date=article.date,
-            content=Markup(article.get_content.jinja()),
-            head=Markup(article.get_head.jinja())
+            content=Markup(article.get_content_html()),
+            renderer_head=Markup(article.get_head_html())
         )
     else:
         flask.abort(404)
