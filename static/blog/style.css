@@ -1,8 +1,13 @@
+:root
+{
+    background-image: url('/static/background.jpg');
+}
+
 body
 {
     width: 800px;
     margin: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;    
 }
 
 h1
@@ -31,10 +36,10 @@ article.snippet::after
 
 article
 {
-    border: 1px solid grey;
-    border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 5px;
 }
 
 article header
@@ -44,8 +49,7 @@ article header
 
 article header h1
 {
-    font-size: 16pt;
-    text-decoration: underline;
+    font-size: 25pt;
     margin-top: 0px;
     margin-bottom: 10px;
 }
