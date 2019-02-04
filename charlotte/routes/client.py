@@ -39,4 +39,4 @@ def submit():
 
         return flask.redirect("/client", code=303)
     except Exception as exception:
-        app.logger.error("Could not POST action to web client: {exception}".format(exception))
+        app.logger.error("Could not POST action to web client: {exception}".format(exception=exception))

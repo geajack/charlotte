@@ -26,7 +26,7 @@ def post_article():
 
         return ""
     except Exception as exception:
-        app.logger.error("Charlotte API suffered an error while processing POST /articles: {exception}".format(exception))
+        app.logger.error("Charlotte API suffered an error while processing POST /articles: {exception}".format(exception=exception))
 
 @app.route("/api/articles/<article_id>", methods=["GET"])
 def get_article(article_id):
