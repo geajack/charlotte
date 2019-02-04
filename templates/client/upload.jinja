@@ -1,7 +1,7 @@
 {% extends "client/base.jinja" %}
 
 {% block body %}
-    <form enctype="multipart/form-data" method="POST" action="/client">
+    <form enctype="multipart/form-data" method="POST" action="{{url_for("view")}}">
         <input type="hidden" name="action" value="new" />
         <h1>Post new article</h1>
         <div>

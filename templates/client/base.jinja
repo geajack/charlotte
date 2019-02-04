@@ -8,13 +8,13 @@
     </head>
 
     <body>
-        <h1><a href="/client">Charlotte Web Client</a></h1>
+        <h1><a href="{{url_for("view")}}">Charlotte Web Client</a></h1>
         <main>
             {% block body %}            
             {% endblock body %}
         </main>
         <footer>
-            <a href="/">View blog</a>
+            <a href="{{url_for("index")}}">View blog</a>
         </footer>
     </body>
 

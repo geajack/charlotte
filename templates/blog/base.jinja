@@ -12,13 +12,13 @@
     </head>
 
     <body>
-        <h1><a href="/">{{blog_name}}</a></h1>
+        <h1><a href="{{url_for("index")}}">{{blog_name}}</a></h1>
 
         {% block body %}
         {% endblock %}
         
         <footer>
-            <a href="/client">Staff entrance</a>
+            <a href="{{url_for("view")}}">Staff entrance</a>
         </footer>
     </body>
 

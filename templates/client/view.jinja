@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1>Articles</h1>
-    <form method="POST" action="/client">
+    <form method="POST" action="{{url_for("view")}}">
         <input type="hidden" name="action" value="delete" />
         <table>
             <thead>
@@ -33,5 +33,5 @@
         </table>
         <input type="submit" class="control" value="Delete selected" />
     </form>
-    <a href="/client/new" class="control">New article</a>
+    <a href="{{url_for("upload")}}" class="control">New article</a>
 {% endblock body %}

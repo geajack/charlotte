@@ -13,7 +13,7 @@
         {% for article in articles %}
         <article class="snippet">
             <header>
-                <h1><a href="/articles/{{article.slug}}">{{article.title}}</a></h1>
+                <h1><a href="{{url_for("article", slug=article.slug)}}">{{article.title}}</a></h1>
                 <legend id="author">by {{article.author}}</legend>
                 <legend id="date">posted on {{article.date}}</legend>
             </header>
@@ -26,11 +26,11 @@
 
         <footer>
             {% if previous_page != None %}
-                <a href="/{{previous_page}}" class="page-link newer">Newer</a>
+                <a href="{{url_for("index", page=previous_page)}}" class="page-link newer">Newer</a>
             {% endif %}
 
             {% if next_page != None %}
-                <a href="/{{next_page}}" class="page-link older">Older</a>
+                <a href="{{url_for("index", page=next_page)}}" class="page-link older">Older</a>
             {% endif %}
         </footer>
     </div>
