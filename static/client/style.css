@@ -1,7 +1,7 @@
 :root
 {
     background-color: rgb(20, 25, 48);
-    background-image: url('/static/client/background.png');
+    background-image: url('background.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: auto 90%;
