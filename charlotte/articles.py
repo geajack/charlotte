@@ -59,26 +59,24 @@ class Article:
 
 def initialize():
     try:
-        connection = sqlite3.connect("articles/database.db")
-        connection.execute(
-            """
-            CREATE TABLE IF NOT EXISTS articles
-                (
-                    id integer PRIMARY KEY,
-                    title text NOT NULL,
-                    author text,
-                    format text,
-                    date datetime,
-                    slug text UNIQUE
-                );
-            """
-        )
+        with sqlite3.connect("articles/database.db") as connection:
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS articles
+                    (
+                        id integer PRIMARY KEY,
+                        title text NOT NULL,
+                        author text,
+                        format text,
+                        date datetime,
+                        slug text UNIQUE
+                    );
+                """
+            )
         charlotte_root = settings.get_charlotte_root()
         (charlotte_root / "articles" / "content").mkdir(exist_ok=True)
     except:
         app.logger.error("Could not initialize database")
-    finally:
-        connection.close()    
 
 def slug_from_title(title):
     return slugify.slugify(title)
