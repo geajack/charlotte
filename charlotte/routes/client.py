@@ -24,16 +24,19 @@ def update(article_id):
 
 @app.route("/client", methods=["POST"])
 def submit():
-    action = request.form.get("action")
-    if action == "delete":
-        for value in request.form:
-            if value != "action":
-                article_id = value
-                api.delete_article(article_id)
-    elif action == "update":
-        article_id = request.form.get("article_id")
-        api.update_article(article_id)
-    elif action == "new":
-        api.post_article()
+    try:
+        action = request.form.get("action")
+        if action == "delete":
+            for value in request.form:
+                if value != "action":
+                    article_id = value
+                    api.delete_article(article_id)
+        elif action == "update":
+            article_id = request.form.get("article_id")
+            api.update_article(article_id)
+        elif action == "new":
+            api.post_article()
 
-    return flask.redirect("/client", code=303)
+        return flask.redirect("/client", code=303)
+    except Exception as exception:
+        app.logger.error("Could not POST action to web client: {exception}".format(exception))

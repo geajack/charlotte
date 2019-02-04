@@ -13,17 +13,20 @@ def get_articles():
 
 @app.route("/api/articles", methods=["POST"])
 def post_article():
-    title = request.form["title"]
-    author = request.form["author"]
-    article_format = request.form["format"]
     try:
-        content = request.files["content"].read()
-    except:
-        flask.abort(400)
-    else:
-        articles.post_article(title, author, article_format, content)
+        title = request.form["title"]
+        author = request.form["author"]
+        article_format = request.form["format"]
+        try:
+            content = request.files["content"].read()
+        except:
+            flask.abort(400)
+        else:
+            articles.post_article(title, author, article_format, content)
 
-    return ""
+        return ""
+    except Exception as exception:
+        app.logger.error("Charlotte API suffered an error while processing POST /articles: {exception}".format(exception))
 
 @app.route("/api/articles/<article_id>", methods=["GET"])
 def get_article(article_id):
