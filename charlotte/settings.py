@@ -61,10 +61,6 @@ def get_charlotte_root():
 def get_config():
     CONFIG_PATH = get_charlotte_root() / "charlotte.config"
     try:
-        if not (CONFIG_PATH.exists() and CONFIG_PATH.is_file()):
-            default_config = get_charlotte_root() / "resources" / "charlotte.config"
-            shutil.copy(default_config, CONFIG_PATH)
-
         with open(CONFIG_PATH, "r") as config_file:
             config = yaml.load(config_file)
     except Exception as exception:
