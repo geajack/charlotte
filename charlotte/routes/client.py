@@ -37,6 +37,6 @@ def submit():
         elif action == "new":
             api.post_article()
 
-        return flask.redirect("/client", code=303)
+        return flask.redirect(flask.url_for("view"), code=303)
     except Exception as exception:
         app.logger.error("Could not POST action to web client: {exception}".format(exception=exception))

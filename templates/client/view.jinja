@@ -18,8 +18,8 @@
                 {% for article in articles %}
                     <tr>
                         <td>
-                            <a href="/client/update/{{article.id}}">{{article.title}}</a>
-                            (<a href="/articles/{{article.slug}}">View</a>)
+                            <a href="{{url_for("update", article_id=article.id)}}">{{article.title}}</a>
+                            (<a href="{{url_for("article", slug=article.slug)}}">View</a>)
                         </td>
                         <td>{{article.author}}</td>
                         <td>{{article.date}}</td>
