@@ -18,7 +18,7 @@ class Article:
         self.renderer = renderers.get_renderer(article_format)
 
     def get_raw_content(self):
-        f = open("articles/{slug}".format(slug=self.slug))
+        f = open("articles/content/{slug}".format(slug=self.slug))
         content = f.read()
         f.close()
         return content
@@ -32,7 +32,7 @@ class Article:
             return self.renderer.head()
 
     def get_file_path(self):
-        return "articles/{slug}".format(slug=self.slug)
+        return "articles/content/{slug}".format(slug=self.slug)
 
     def as_api_entity(self):
         dictionary = {
@@ -59,7 +59,7 @@ class Article:
 
 def initialize():
     try:
-        connection = sqlite3.connect("database.db")
+        connection = sqlite3.connect("articles/database.db")
         connection.execute(
             """
             CREATE TABLE IF NOT EXISTS articles
@@ -74,7 +74,7 @@ def initialize():
             """
         )
         charlotte_root = settings.get_charlotte_root()
-        (charlotte_root / "articles").mkdir(exist_ok=True)
+        (charlotte_root / "articles" / "content").mkdir(exist_ok=True)
     except:
         app.logger.error("Could not initialize database")
     finally:
@@ -86,7 +86,7 @@ def slug_from_title(title):
 def unique_slug_from_title(title):
     slug = slug_from_title(title)
     
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     cursor = connection.execute("SELECT slug FROM articles")
     rows = cursor.fetchall()
     connection.close()
@@ -102,7 +102,7 @@ def unique_slug_from_title(title):
 def updated_unique_slug(article_id, title):
     slug = slug_from_title(title)
     
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     cursor = connection.execute("SELECT id, slug FROM articles")
     rows = cursor.fetchall()
     connection.close()
@@ -116,7 +116,7 @@ def updated_unique_slug(article_id, title):
     return unique_slug
 
 def how_many():
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     cursor = connection.execute("SELECT COUNT(*) FROM articles")
     row = cursor.fetchone()
     connection.close()
@@ -124,7 +124,7 @@ def how_many():
     return number
 
 def get_all():
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     query = """
         SELECT id, title, author, format, date, slug FROM articles
         ORDER BY date DESC
@@ -142,7 +142,7 @@ def get_all():
     return articles
 
 def get_latest_articles(skip, number):
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     query = """
         SELECT id, title, author, format, date, slug FROM articles
         ORDER BY date DESC
@@ -165,7 +165,7 @@ def get_latest_articles(skip, number):
     return articles
 
 def get_article_by_id(article_id):
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     query = "SELECT id, title, author, format, date, slug FROM articles WHERE id = :id"
     parameters = { "id" : article_id }
     cursor = connection.execute(query, parameters)
@@ -179,7 +179,7 @@ def get_article_by_id(article_id):
         return None
 
 def get_article_by_slug(slug):
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     query = "SELECT id, title, author, format, date FROM articles WHERE slug = :slug"
     parameters = { "slug" : slug }
     cursor = connection.execute(query, parameters)
@@ -194,7 +194,7 @@ def get_article_by_slug(slug):
 
 def post_article(title, author, article_format, content):
     slug = unique_slug_from_title(title)
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("articles/database.db")
     query = \
         """
         INSERT INTO articles
@@ -212,7 +212,7 @@ def post_article(title, author, article_format, content):
     cursor = connection.execute("SELECT last_insert_rowid()")
     rows = cursor.fetchall()
     new_id = rows[0][0]
-    f = open("articles/{slug}".format(slug=slug), "wb")
+    f = open("articles/content/{slug}".format(slug=slug), "wb")
     f.write(content)
     f.close()
     connection.close()
@@ -222,7 +222,7 @@ def delete_article(article_id):
         article = get_article_by_id(article_id)
         article_file = article.get_file_path()
 
-        connection = sqlite3.connect("database.db")
+        connection = sqlite3.connect("articles/database.db")
         query = "DELETE FROM articles WHERE id = :id"
         parameters = { "id": article_id }
         connection.execute(query, parameters)
@@ -240,17 +240,17 @@ def update_article(article_id, title=None, author=None, format=None, content=Non
     if title is not None:
         slug = updated_unique_slug(article_id, title)
         old_file = article.get_file_path()
-        os.rename(old_file, "articles/{slug}".format(slug=slug))
+        os.rename(old_file, "articles/content/{slug}".format(slug=slug))
     else:
         slug = article.slug
 
     if content is not None:
-        f = open("articles/{slug}".format(slug=slug), "wb")
+        f = open("articles/content/{slug}".format(slug=slug), "wb")
         f.write(content)
         f.close()
 
     try:
-        connection = sqlite3.connect("database.db")    
+        connection = sqlite3.connect("articles/database.db")    
         query = """
             UPDATE articles
             SET
