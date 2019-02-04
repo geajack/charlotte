@@ -57,7 +57,7 @@ def article(slug=None):
     if article is not None:
         return render_template(
             "blog/article.jinja",
-            title=article.title,
+            title=article.display_title(),
             author=article.author,
             date=article.date,
             format=article.article_format,

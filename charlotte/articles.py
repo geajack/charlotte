@@ -1,5 +1,7 @@
 import os
 import sqlite3
+from datetime import datetime
+
 import slugify
 
 from charlotte import app
@@ -13,9 +15,15 @@ class Article:
         self.title = title
         self.author = author
         self.article_format = article_format
-        self.date = date
+        self.date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         self.slug = slug
         self.renderer = renderers.get_renderer(article_format)
+
+    def display_title(self):
+        if self.title == "":
+            return self.date.strftime("%d %B %Y")
+        else:
+            return self.title
 
     def get_raw_content(self):
         f = open("articles/content/{slug}".format(slug=self.slug))
@@ -79,7 +87,10 @@ def initialize():
         app.logger.error("Could not initialize database")
 
 def slug_from_title(title):
-    return slugify.slugify(title)
+    if title == "":
+        return "untitled"
+    else:
+        return slugify.slugify(title)
 
 def unique_slug_from_title(title):
     slug = slug_from_title(title)

@@ -13,7 +13,7 @@
         {% for article in articles %}
         <article class="snippet">
             <header>
-                <h1><a href="{{url_for("article", slug=article.slug)}}">{{article.title}}</a></h1>
+                <h1><a href="{{url_for("article", slug=article.slug)}}">{{article.display_title()}}</a></h1>
                 <legend id="author">by {{article.author}}</legend>
                 <legend id="date">posted on {{article.date}}</legend>
             </header>
