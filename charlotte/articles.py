@@ -45,16 +45,18 @@ class Article:
 
     def as_api_entity(self):
         return {
+            "id": self.id,
             "title": self.title,
             "author": self.author,
             "format": self.article_format,
             "date": self.date,
             "slug": self.slug,
-            "content": self.content
+            "content": self.get_raw_content()
         }
 
     def as_api_header(self):
         return {
+            "id": self.id,
             "title": self.title,
             "author": self.author,
             "format": self.article_format,
