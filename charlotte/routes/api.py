@@ -3,43 +3,44 @@ import flask
 
 from charlotte import app
 from charlotte import settings
-from charlotte import articles
+from charlotte import api
+
+@app.errorhandler(api.UnauthorizedException)
+def api_unauthorized_handler(exception):
+    flask.abort(401)
 
 @app.route("/api/articles", methods=["GET"])
 def get_articles():
-    all_articles = articles.get_all()
-    api_entities = [article.as_api_header_entity() for article in all_articles]
-    return flask.jsonify(api_entities)
+    all_articles = api.get_articles()
+    json_articles = [article.as_dict() for article in all_articles]
+    return flask.jsonify(json_articles)
 
 @app.route("/api/articles", methods=["POST"])
 def post_article():
+    title = request.form["title"]
+    author = request.form["author"]
+    article_format = request.form["format"]
     try:
-        title = request.form["title"]
-        author = request.form["author"]
-        article_format = request.form["format"]
-        try:
-            content = request.files["content"].read()
-        except:
-            flask.abort(400)
-        else:
-            articles.post_article(title, author, article_format, content)
+        content = request.files["content"].read()
+    except:
+        flask.abort(400)
+    else:
+        api.post_article(title, author, article_format, content)
 
-        return ""
-    except Exception as exception:
-        app.logger.error("Charlotte API suffered an error while processing POST /articles: {exception}".format(exception=exception))
+    return ""
 
 @app.route("/api/articles/<article_id>", methods=["GET"])
 def get_article(article_id):
-    article = articles.get_article_by_id(article_id)
-    if article is not None:
-        return flask.jsonify(article.as_api_entity())
-    else:
-        flask.abort(404)
+    article = api.get_article(article_id)
+    return flask.jsonify(article.as_dict())
 
 @app.route("/api/articles/<article_id>", methods=["DELETE"])
-def delete_article(article_id):    
-    articles.delete_article(article_id)
-    return ""
+def delete_article(article_id):
+    if request.authorization is not None:
+        api.delete_article(article_id, request.authorization.password)
+        return ""
+    else:
+        flask.abort(401)
 
 @app.route("/api/articles/<article_id>", methods=["PATCH"])
 def update_article(article_id):
@@ -52,12 +53,12 @@ def update_article(article_id):
     except:
         content = None
     
-    articles.update_article(article_id, title=title, author=author, format=article_format, content=content)
+    api.update_article(article_id, title, author, article_format, content)
 
     return ""
 
 @app.route("/api/formats", methods=["GET"])
 def get_formats():
-    formats = settings.get_formats()
-    api_entities = [format_object.as_api_entity() for format_object in formats]
-    return flask.jsonify(api_entities)
+    formats = api.get_formats()
+    json_formats = [format_entity.as_dict() for format_entity in formats]
+    return flask.jsonify(json_formats)

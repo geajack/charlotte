@@ -7,6 +7,7 @@ import slugify
 from charlotte import app
 from charlotte import settings
 from charlotte import renderers
+from charlotte import api
 
 class Article:
 
@@ -43,27 +44,14 @@ class Article:
         return "articles/content/{slug}".format(slug=self.slug)
 
     def as_api_entity(self):
-        dictionary = {
-            "id": self.id,
-            "title": self.title,
-            "author": self.author,
-            "date": self.date,
-            "slug": self.slug,
-            "format": self.article_format,
-            "content": self.get_raw_content()
-        }
-        return dictionary
-
-    def as_api_header_entity(self):
-        dictionary = {
-            "id": self.id,
-            "title": self.title,
-            "author": self.author,
-            "date": self.date,
-            "slug": self.slug,
-            "format": self.article_format
-        }
-        return dictionary
+        return api.ArticleAPIEntity(
+            title=self.title,
+            author=self.author,
+            article_format=self.article_format,
+            date=self.date,
+            slug=self.slug,
+            content=self.get_raw_content()
+        )
 
 def initialize():
     try:

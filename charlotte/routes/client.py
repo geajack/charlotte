@@ -4,22 +4,22 @@ import flask
 from flask import render_template, request
 
 from charlotte import app
-from charlotte.routes import api
+from charlotte import api
 
 @app.route("/client", methods=["GET"])
 def view():
-    all_articles = api.get_articles().get_json()
+    all_articles = api.get_articles()
     return render_template("client/view.jinja", articles=all_articles)
 
 @app.route("/client/new")
 def upload():
-    formats = api.get_formats().get_json()
+    formats = api.get_formats()
     return render_template("client/upload.jinja", formats=formats)
 
 @app.route("/client/update/<article_id>")
 def update(article_id):
-    article = api.get_article(article_id).get_json()
-    formats = api.get_formats().get_json()
+    article = api.get_article(article_id)
+    formats = api.get_formats()
     return render_template("client/update.jinja", article=article, formats=formats)
 
 @app.route("/client", methods=["POST"])

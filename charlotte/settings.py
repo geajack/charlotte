@@ -4,6 +4,7 @@ import shutil
 import yaml
 
 from charlotte import app
+from charlotte import api
 
 class Format:
 
@@ -14,11 +15,19 @@ class Format:
         self.description = description
 
     def as_api_entity(self):
-        return {
-            "identifier": self.identifier,
-            "name": self.name,
-            "description": self.description
-        }
+        return api.FormatAPIEntity(self.identifier, self.name, self.description)
+
+def is_password_correct(password):
+    try:
+        config = get_config()
+        stored_password = config["blog"]["password"]
+        if password == stored_password:
+            return True
+        else:
+            return False
+    except Exception as exception:
+        app.logger.error("Could not get password from charlotte.config file: {}".format(exception))
+        return None
 
 def get_format(identifier):
     try:
