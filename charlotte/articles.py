@@ -44,14 +44,23 @@ class Article:
         return "articles/content/{slug}".format(slug=self.slug)
 
     def as_api_entity(self):
-        return api.ArticleAPIEntity(
-            title=self.title,
-            author=self.author,
-            article_format=self.article_format,
-            date=self.date,
-            slug=self.slug,
-            content=self.get_raw_content()
-        )
+        return {
+            "title": self.title,
+            "author": self.author,
+            "format": self.article_format,
+            "date": self.date,
+            "slug": self.slug,
+            "content": self.content
+        }
+
+    def as_api_header(self):
+        return {
+            "title": self.title,
+            "author": self.author,
+            "format": self.article_format,
+            "date": self.date,
+            "slug": self.slug
+        }
 
 def initialize():
     try:

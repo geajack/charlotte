@@ -2,61 +2,6 @@ from charlotte import app
 from charlotte import articles
 from charlotte import settings
 
-class FormatAPIEntity:
-
-    def __init__(self, identifier, name, description):
-        self.identifier = identifier
-        self.name = name
-        self.description = description
-
-    def as_dict(self):
-        return {
-            "identifier": self.identifier,
-            "name": self.name,
-            "description": self.description
-        }
-
-class ArticleAPIEntity:
-
-    def __init__(self, title, author, article_format, date, slug, content):
-        self.title = title
-        self.author = author
-        self.article_format = article_format
-        self.date = date
-        self.slug = slug
-        self.content = content
-
-    def get_header(self):
-        return ArticleHeaderAPIEntity(self.title, self.author, self.article_format, self.date, self.slug)
-
-    def as_dict(self):
-        return {
-            "title": self.title,
-            "author": self.author,
-            "format": self.article_format,
-            "date": self.date,
-            "slug": self.slug,
-            "content": self.content
-        }
-
-class ArticleHeaderAPIEntity:
-
-    def __init__(self, title, author, article_format, date, slug):
-        self.title = title
-        self.author = author
-        self.article_format = article_format
-        self.date = date
-        self.slug = slug
-
-    def as_dict(self):
-        return {
-            "title": self.title,
-            "author": self.author,
-            "format": self.article_format,
-            "date": self.date,
-            "slug": self.slug
-        }
-
 class CharlotteAPIException(Exception):
     pass
 
@@ -65,7 +10,7 @@ class UnauthorizedException(CharlotteAPIException):
 
 def get_articles():
     all_articles = articles.get_all()
-    headers = [article.as_api_entity().get_header() for article in all_articles]
+    headers = [article.as_api_header() for article in all_articles]
     return headers
 
 def post_article(title, author, article_format, content, password):

@@ -12,8 +12,7 @@ def api_unauthorized_handler(exception):
 @app.route("/api/articles", methods=["GET"])
 def get_articles():
     all_articles = api.get_articles()
-    json_articles = [article.as_dict() for article in all_articles]
-    return flask.jsonify(json_articles)
+    return flask.jsonify(all_articles)
 
 @app.route("/api/articles", methods=["POST"])
 def post_article():
@@ -32,7 +31,7 @@ def post_article():
 @app.route("/api/articles/<article_id>", methods=["GET"])
 def get_article(article_id):
     article = api.get_article(article_id)
-    return flask.jsonify(article.as_dict())
+    return flask.jsonify(article)
 
 @app.route("/api/articles/<article_id>", methods=["DELETE"])
 def delete_article(article_id):
@@ -60,5 +59,4 @@ def update_article(article_id):
 @app.route("/api/formats", methods=["GET"])
 def get_formats():
     formats = api.get_formats()
-    json_formats = [format_entity.as_dict() for format_entity in formats]
-    return flask.jsonify(json_formats)
+    return flask.jsonify(formats)

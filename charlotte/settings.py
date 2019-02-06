@@ -15,7 +15,11 @@ class Format:
         self.description = description
 
     def as_api_entity(self):
-        return api.FormatAPIEntity(self.identifier, self.name, self.description)
+        return {
+            "identifier": self.identifier,
+            "name": self.name,
+            "description": self.description
+        }
 
 def is_password_correct(password):
     try:
