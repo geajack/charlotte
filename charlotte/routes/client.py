@@ -32,11 +32,19 @@ def submit():
                     article_id = value
                     api.delete_article(article_id)
         elif action == "update":
-            article_id = request.form.get("article_id")
-            api.update_article(article_id)
+            article_id = request.form.get("article_id")            
+            title = request.form.get("title")
+            author = request.form.get("author")            
+            content = request.form.get("content")            
+            article_format = request.form.get("article_format")
+            if request.authorization:
+                password = request.authorization.password
+                api.update_article(article_id, title, author, article_format, content, password)
+            else:
+                flask.abort(401)
         elif action == "new":
             api.post_article()
 
         return flask.redirect(flask.url_for("view"), code=303)
-    except Exception as exception:
-        app.logger.error("Could not POST action to web client: {exception}".format(exception=exception))
+    except api.UnauthorizedException as exception:
+        flask.abort(401)
