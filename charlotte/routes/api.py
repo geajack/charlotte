@@ -68,6 +68,9 @@ def update_article(article_id, password):
         content = request.files["content"].read()
     except:
         content = None
+
+    if article_format is None:
+        flask.abort(400)
     
     api.update_article(article_id, title, author, article_format, content, password=password)
 

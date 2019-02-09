@@ -40,11 +40,29 @@ def submit():
             article_id = request.form.get("article_id")            
             title = request.form.get("title")
             author = request.form.get("author")            
-            content = request.form.get("content")            
-            article_format = request.form.get("article_format")            
-            api.update_article(article_id, title, author, article_format, content, password, password=password)
+            article_format = request.form.get("format")
+
+            if article_format is None:
+                flask.abort(400)
+
+            try:
+                content = request.files["content"].read()
+            except:
+                content = None
+            api.update_article(article_id, title, author, article_format, content, password=password)
         elif action == "new":
-            api.post_article(password=password)
+            title = request.form.get("title")
+            author = request.form.get("author")            
+            article_format = request.form.get("format")
+
+            if article_format is None:
+                flask.abort(400)
+
+            try:
+                content = request.files["content"].read()
+            except:
+                content = None
+            api.post_article(title, author, article_format, content, password=password)
 
         return flask.redirect(flask.url_for("view"), code=303)
     except api.UnauthorizedException:
