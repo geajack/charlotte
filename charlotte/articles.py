@@ -82,8 +82,8 @@ def initialize():
             )
         charlotte_root = settings.get_charlotte_root()
         (charlotte_root / "articles" / "content").mkdir(exist_ok=True)
-    except:
-        app.logger.error("Could not initialize database")
+    except Exception as exception:
+        app.logger.error("Could not initialize database: {exception}".format(exception=exception))
 
 def slug_from_title(title):
     if title == "":
