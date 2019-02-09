@@ -1,34 +1,44 @@
 import json
 
+from functools import wraps
 import flask
 from flask import render_template, request
 
 from charlotte import app
 from charlotte import api
 
+def requires_login(route):
+    @wraps(route)
+    def authenticated_route(*args, **kwargs):
+        password = request.cookies.get("password")
+        print(password)
+        return route(*args, **kwargs, password=password)
+
+    return authenticated_route
+
 @app.route("/client", methods=["GET"])
-def view():
-    password = request.cookies.get("password")
+@requires_login
+def view(password=None):
     all_articles = api.get_articles(password=password)
     return render_template("client/view.jinja", articles=all_articles)
 
 @app.route("/client/new")
-def upload():
-    password = request.cookies.get("password")
+@requires_login
+def upload(password=None):
     formats = api.get_formats(password=password)
     return render_template("client/upload.jinja", formats=formats)
 
 @app.route("/client/update/<article_id>")
-def update(article_id):
-    password = request.cookies.get("password")
+@requires_login
+def update(article_id, password=None):
     article = api.get_article(article_id, password=password)
     formats = api.get_formats(password=password)
     return render_template("client/update.jinja", article=article, formats=formats)
 
 @app.route("/client", methods=["POST"])
-def submit():
+@requires_login
+def submit(password=None):
     try:
-        password = request.cookies.get("password")
         action = request.form.get("action")
 
         if action == "delete":
