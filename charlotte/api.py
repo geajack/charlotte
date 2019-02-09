@@ -36,11 +36,11 @@ def get_article(article_id):
         raise CharlotteAPIException()
 
 @authenticate
-def delete_article(article_id, password):
+def delete_article(article_id):
     articles.delete_article(article_id)
 
 @authenticate
-def update_article(article_id, title, author, article_format, content, password):
+def update_article(article_id, title, author, article_format, content):
     articles.update_article(article_id, title=title, author=author, format=article_format, content=content)
 
 @authenticate
