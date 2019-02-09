@@ -10,11 +10,29 @@ from charlotte import api
 def requires_login(route):
     @wraps(route)
     def authenticated_route(*args, **kwargs):
-        password = request.cookies.get("password")
-        print(password)
-        return route(*args, **kwargs, password=password)
+        try:
+            password = request.cookies.get("password")
+            return route(*args, **kwargs, password=password)
+        except api.UnauthorizedException:
+            return flask.redirect(flask.url_for("login"))
 
     return authenticated_route
+
+@app.route("/client/login", methods=["GET"])
+def login():
+    return render_template("client/login.jinja", incorrect=False)
+
+@app.route("/client/login", methods=["POST"])
+def submit_login():
+    password = request.form.get("password")
+    try:
+        api.get_articles(password=password)
+    except api.UnauthorizedException:
+        return render_template("client/login.jinja", incorrect=True)
+
+    response = flask.redirect(flask.url_for("view"), code=303)        
+    response.set_cookie("password", value=password)
+    return response
 
 @app.route("/client", methods=["GET"])
 @requires_login

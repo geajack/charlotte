@@ -105,3 +105,8 @@ body > footer a:hover
 {
     text-decoration: underline;
 }
+
+.login
+{
+    text-align: center;
+}
