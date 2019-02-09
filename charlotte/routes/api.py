@@ -30,13 +30,16 @@ def get_articles(password):
 @app.route("/api/articles", methods=["POST"])
 @authenticate
 def post_article(password):
-    title = request.form["title"]
-    author = request.form["author"]
-    article_format = request.form["format"]
+    title = request.form.get("title", None)
+    author = request.form.get("author", None)
+    article_format = request.form.get("format", None)
     try:
         content = request.files["content"].read()
     except:
         content = None
+
+    if article_format is None:
+        flask.abort(400)
     
     api.post_article(title, author, article_format, content, password=password)
 
