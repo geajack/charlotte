@@ -9,7 +9,7 @@ class UnauthorizedException(CharlotteAPIException):
     pass
 
 def authenticate(operation):
-    def authenticated_operation(*args, **kwargs, password=None):
+    def authenticated_operation(*args, password=None, **kwargs):
         if settings.is_password_correct(password):
             return operation(*args, **kwargs)
         else:
