@@ -36,7 +36,7 @@ def post_article(password):
     try:
         content = request.files["content"].read()
     except:
-        content = request.form.get("content", None)
+        content = None
 
     if article_format is None:
         flask.abort(400)
@@ -67,7 +67,7 @@ def update_article(article_id, password):
     try:
         content = request.files["content"].read()
     except:
-        content = request.form.get("content", None)
+        content = None
     
     api.update_article(article_id, title, author, article_format, content, password=password)
 
