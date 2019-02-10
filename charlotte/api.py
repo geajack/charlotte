@@ -41,7 +41,7 @@ def delete_article(article_id):
 
 @authenticate
 def update_article(article_id, title, author, article_format, content):
-    articles.update_article(article_id, title=title, author=author, format=article_format, content=content)
+    articles.update_article(article_id, title=title, author=author, article_format=article_format, content=content)
 
 @authenticate
 def get_formats():
