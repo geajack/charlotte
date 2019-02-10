@@ -245,12 +245,12 @@ def delete_article(article_id):
 def update_article(article_id, title=None, author=None, article_format=None, content=None):
     article = get_article_by_id(article_id)
 
-    if title is not None:
+    if title is None or title == article.title:
+        slug = article.slug
+    else:
         slug = updated_unique_slug(article_id, title)
         old_file = article.get_file_path()
         os.rename(old_file, "articles/content/{slug}".format(slug=slug))
-    else:
-        slug = article.slug
 
     if content is not None:
         f = open("articles/content/{slug}".format(slug=slug), "wb")
