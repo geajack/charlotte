@@ -242,7 +242,7 @@ def delete_article(article_id):
     finally:
         connection.close()
 
-def update_article(article_id, title=None, author=None, format=None, content=None):
+def update_article(article_id, title=None, author=None, article_format=None, content=None):
     article = get_article_by_id(article_id)
 
     if title is not None:
@@ -273,7 +273,7 @@ def update_article(article_id, title=None, author=None, format=None, content=Non
             "article_id": article_id,
             "title": title,
             "author": author,
-            "format": format,
+            "format": article_format,
             "slug": slug,
             "content": content
         }
