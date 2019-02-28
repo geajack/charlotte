@@ -33,6 +33,14 @@ def is_password_correct(password):
         app.logger.error("Could not get password from charlotte.config file: {}".format(exception))
         return None
 
+def get_theme_directory():
+    try:
+        config = get_config()
+        theme_name = config["theme"]
+        return get_charlotte_root() / "themes" / theme_name
+    except Exception as exception:
+        app.logger.error("Could not load theme directory: {}".format(exception))
+
 def get_format(identifier):
     try:
         formats = get_formats()

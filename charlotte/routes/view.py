@@ -66,3 +66,11 @@ def article(slug=None):
         )
     else:
         flask.abort(404)
+
+@app.route("/theme/<path:path>")
+def theme(path):
+    theme_directory = settings.get_theme_directory()
+    if theme_directory is not None:
+        return flask.send_from_directory(theme_directory, path)
+    else:
+        return ""
