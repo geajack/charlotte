@@ -1,9 +1,37 @@
+import codecs
+
 from flask import render_template, Markup
 import flask
+from jinja2 import BaseLoader
+from jinja2.parser import Parser
+from jinja2.exceptions import TemplateNotFound
 
 from charlotte import app
 from charlotte import articles
 from charlotte import settings
+
+class CharlotteTemplateLoader(BaseLoader):
+
+    def __init__(self):
+        pass
+
+    def get_source(self, environment, name):
+        theme_folder = settings.get_theme_directory()
+        if theme_folder is None:
+            raise TemplateNotFound(name)
+
+        template_path = theme_folder / "templates" / name
+        print(template_path)
+        try:
+            with open(template_path) as f:
+                return f.read(), str(template_path), self.use_cache.__get__(self, CharlotteTemplateLoader)
+        except FileNotFoundError:
+            raise TemplateNotFound(name)
+
+    def use_cache(self, path):
+        return False
+
+app.jinja_loader = CharlotteTemplateLoader()
 
 @app.context_processor
 def inject():
@@ -44,7 +72,7 @@ def index(page="1"):
                 head += "\n"
 
         return render_template(
-            "blog/index.jinja",
+            "index.jinja",
             articles=visible_articles,
             renderer_head=Markup(head),
             next_page=next_page,
@@ -56,7 +84,7 @@ def article(slug=None):
     article = articles.get_article_by_slug(slug)
     if article is not None:
         return render_template(
-            "blog/article.jinja",
+            "article.jinja",
             title=article.display_title(),
             author=article.author,
             date=article.date,
