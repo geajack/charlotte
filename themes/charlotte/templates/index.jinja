@@ -13,13 +13,19 @@
         {% for article in articles %}
         <article class="snippet">
             <header>
-                <h1><a href="{{url_for("article", slug=article.slug)}}">{{article.display_title()}}</a></h1>
+                <h1><a href="{{url_for("article", slug=article.slug)}}">
+                    {% if article.title %}
+                        {{article.title}}                    
+                    {% else %}
+                        {{article.date.strftime("%d %B %Y")}}
+                    {% endif %}
+                </a></h1>
                 <legend id="author">by {{article.author}}</legend>
                 <legend id="date">posted on {{article.date}}</legend>
             </header>
 
-            <main class="{{article.article_format}}-format">
-                {{article.get_content_html() | safe}} 
+            <main class="{{article.format}}-format">
+                {{article.content}} 
             </main>
         </article>
         {% endfor %}

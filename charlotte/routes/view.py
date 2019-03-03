@@ -45,9 +45,10 @@ def index(page="1"):
                 head += renderer.head()
                 head += "\n"
 
+        template_entities = [article.as_template_entity() for article in visible_articles]
         return render_template(
             "index.jinja",
-            articles=visible_articles,
+            articles=template_entities,
             renderer_head=Markup(head),
             next_page=next_page,
             previous_page=previous_page
@@ -59,11 +60,7 @@ def article(slug=None):
     if article is not None:
         return render_template(
             "article.jinja",
-            title=article.display_title(),
-            author=article.author,
-            date=article.date,
-            format=article.article_format,
-            content=Markup(article.get_content_html()),
+            article=article.as_template_entity(),
             renderer_head=Markup(article.get_head_html())
         )
     else:

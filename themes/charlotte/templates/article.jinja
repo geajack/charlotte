@@ -7,17 +7,23 @@
 {% block body %}
     <article>
         <header>
-            <h1>{{title}}</h1>
-            {% if author %}
-                <legend id="author">by {{author}}</legend>
+            <h1>
+                {% if article.title %}
+                    {{article.title}}                    
+                {% else %}
+                    {{article.date.strftime("%d %B %Y")}}
+                {% endif %}
+            </h1>
+            {% if article.author %}
+                <legend id="author">by {{article.author}}</legend>
             {% else %}
                 <legend id="author">by <em>Anonymous</em></legend>
             {% endif %}
-            <legend id="date">posted on {{date}}</legend>
+            <legend id="date">posted on {{article.date}}</legend>
         </header>
 
-        <main class="{{format}}-format">
-            {{content}}
+        <main class="{{article.format}}-format">
+            {{article.content}}
         </main>
     </article>
 {% endblock %}

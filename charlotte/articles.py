@@ -3,6 +3,7 @@ import sqlite3
 from datetime import datetime
 
 import slugify
+from flask import Markup
 
 from charlotte import app
 from charlotte import settings
@@ -19,12 +20,6 @@ class Article:
         self.date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         self.slug = slug
         self.renderer = renderers.get_renderer(article_format)
-
-    def display_title(self):
-        if self.title == "":
-            return self.date.strftime("%d %B %Y")
-        else:
-            return self.title
 
     def get_raw_content(self):
         f = open("articles/content/{slug}".format(slug=self.slug))
@@ -62,6 +57,15 @@ class Article:
             "format": self.article_format,
             "date": self.date,
             "slug": self.slug
+        }
+
+    def as_template_entity(self):
+        return {
+            "title": self.title,
+            "author": self.author,
+            "date": self.date,
+            "format": self.article_format,
+            "content": Markup(self.get_content_html())
         }
 
 def initialize():
