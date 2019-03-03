@@ -23,7 +23,7 @@ class TemplateLoader(BaseLoader):
         except FileNotFoundError:
             raise TemplateNotFound(name)
 
-    def use_cache(self, path):
+    def use_cache(self, path=None):
         return False
 
 app.jinja_loader = TemplateLoader()
