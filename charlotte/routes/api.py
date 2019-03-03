@@ -48,18 +48,33 @@ def post_article(password):
 @app.route("/api/articles/<article_id>", methods=["GET"])
 @authenticate
 def get_article(article_id, password):
+    try:
+        article_id = int(article_id)
+    except:
+        flask.abort(404)
+        
     article = api.get_article(article_id, password=password)
     return flask.jsonify(article)
 
 @app.route("/api/articles/<article_id>", methods=["DELETE"])
 @authenticate
 def delete_article(article_id, password):
+    try:
+        article_id = int(article_id)
+    except:
+        flask.abort(404)
+
     api.delete_article(article_id, password=password)
     return ""
 
 @app.route("/api/articles/<article_id>", methods=["PATCH"])
 @authenticate
 def update_article(article_id, password):
+    try:
+        article_id = int(article_id)
+    except:
+        flask.abort(404)
+
     title = request.form.get("title", None)
     author = request.form.get("author", None)
     article_format = request.form.get("format", None)
