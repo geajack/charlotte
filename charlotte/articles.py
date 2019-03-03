@@ -65,6 +65,7 @@ class Article:
             "author": self.author,
             "date": self.date,
             "format": self.article_format,
+            "slug": self.slug,
             "content": Markup(self.get_content_html())
         }
 
