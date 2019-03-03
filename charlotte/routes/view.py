@@ -21,7 +21,7 @@ class CharlotteTemplateLoader(BaseLoader):
             raise TemplateNotFound(name)
 
         template_path = theme_folder / "templates" / name
-        print(template_path)
+        
         try:
             with open(template_path) as f:
                 return f.read(), str(template_path), self.use_cache.__get__(self, CharlotteTemplateLoader)
@@ -99,6 +99,6 @@ def article(slug=None):
 def theme(path):
     theme_directory = settings.get_theme_directory()
     if theme_directory is not None:
-        return flask.send_from_directory(theme_directory, path)
+        return flask.send_from_directory(theme_directory / "resources", path)
     else:
         return ""
