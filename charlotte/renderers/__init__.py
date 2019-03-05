@@ -1,6 +1,5 @@
 import importlib
 
-from charlotte.renderers import mathdown, plain
 from charlotte import settings
 
 def get_renderer(format_identifier):
