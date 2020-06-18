@@ -71,6 +71,8 @@ class Article:
 
 def initialize():
     try:
+        charlotte_root = settings.get_charlotte_root()
+        (charlotte_root / "articles" / "content").mkdir(exist_ok=True, parents=True)
         with sqlite3.connect("articles/database.db") as connection:
             connection.execute(
                 """
@@ -85,8 +87,6 @@ def initialize():
                     );
                 """
             )
-        charlotte_root = settings.get_charlotte_root()
-        (charlotte_root / "articles" / "content").mkdir(exist_ok=True)
     except Exception as exception:
         app.logger.error("Could not initialize database: {exception}".format(exception=exception))
 
