@@ -83,7 +83,7 @@ def get_config():
     CONFIG_PATH = get_charlotte_root() / "charlotte.config"
     try:
         with open(CONFIG_PATH, "r") as config_file:
-            config = yaml.load(config_file)
+            config = yaml.load(config_file, loader=yaml.BaseLoader)
     except Exception as exception:
         app.logger.error("Could not load charlotte.config: {}".format(exception))
         config = None
