@@ -1,5 +1,6 @@
 import pathlib
 import shutil
+import os
 
 import yaml
 
@@ -76,16 +77,24 @@ def get_blog_name():
         app.logger.error("Could not read 'Blog Name' key in charlotte.config file")
         return "A Charlotte Blog"
 
-def get_charlotte_root():
-    return pathlib.Path(__file__).parent.parent
-
 def get_config():
     CONFIG_PATH = get_charlotte_root() / "charlotte.config"
     try:
         with open(CONFIG_PATH, "r") as config_file:
-            config = yaml.load(config_file, loader=yaml.BaseLoader)
+            config = yaml.load(config_file, Loader=yaml.BaseLoader)
     except Exception as exception:
         app.logger.error("Could not load charlotte.config: {}".format(exception))
         config = None
 
     return config
+
+def get_charlotte_root():
+    charlotte_root = pathlib.Path(".")
+    environment_variable = os.environ.get("CHARLOTTE_ROOT")
+    if environment_variable is not None:
+        path = pathlib.Path(environment_variable)
+        if path.is_dir():
+            charlotte_root = path
+        else:
+            app.logger.error("Environment variable CHARLOTTE_ROOT has invalid value \"{}\". Defaulting to current working directory.".format(str(path)))
+    return charlotte_root
