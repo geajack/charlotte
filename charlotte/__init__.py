@@ -3,7 +3,7 @@ from jinja2 import BaseLoader
 from jinja2.parser import Parser
 from jinja2.exceptions import TemplateNotFound
 
-app = Flask("Charlotte")
+application = Flask("Charlotte")
 
 class TemplateLoader(BaseLoader):
 
@@ -39,6 +39,8 @@ class TemplateLoader(BaseLoader):
     def use_cache(self, path=None):
         return False
 
-app.jinja_loader = TemplateLoader()
+application.jinja_loader = TemplateLoader()
+
+app = application
 
 import charlotte.routes
