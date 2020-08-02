@@ -11,7 +11,11 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/geajack/charlotte",
-    packages=["charlotte"],
+    packages=setuptools.find_packages(),
+    package_data={
+        "charlotte": ["resources/*", "resources/renderers/*", "resources/themes/charlotte/*/*"]
+    },
+    include_package_data=True,
     classifiers=[
     ],
     python_requires='>=3.6',
@@ -25,7 +29,12 @@ setuptools.setup(
         "pyyaml>=4.2b1",
         "python-slugify==2.0.1",
         "Werkzeug==0.14.1"
-    ]
+    ],
+    entry_points = {
+        "console_scripts": [
+            "charlotte=charlotte.cli:main"
+        ]
+    }
 )
 
 rmtree("charlotte_blog.egg-info")
