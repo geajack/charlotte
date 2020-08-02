@@ -13,7 +13,15 @@ setuptools.setup(
     url="https://github.com/geajack/charlotte",
     packages=setuptools.find_packages(),
     package_data={
-        "charlotte": ["resources/*", "resources/renderers/*", "resources/themes/charlotte/*/*"]
+        "charlotte": [
+            "resources/*",
+            "resources/renderers/*",
+            "resources/themes/charlotte/*/*"
+        ],
+        "charlotte.client": [
+            "resources/static/*",
+            "resources/templates/*"
+        ]
     },
     include_package_data=True,
     classifiers=[
