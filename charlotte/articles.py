@@ -209,7 +209,8 @@ def get_article_by_slug(slug):
 
 def post_article(title, author, article_format, content):
     slug = unique_slug_from_title(title)
-    connection = sqlite3.connect(settings.get_charlotte_root() / "articles" / "database.db")
+    charlotte_root = settings.get_charlotte_root()
+    connection = sqlite3.connect(charlotte_root / "articles" / "database.db")
     query = \
         """
         INSERT INTO articles
@@ -227,7 +228,7 @@ def post_article(title, author, article_format, content):
     cursor = connection.execute("SELECT last_insert_rowid()")
     rows = cursor.fetchall()
     new_id = rows[0][0]
-    f = open("articles/content/{slug}".format(slug=slug), "wb")
+    f = open(charlotte_root / "articles/content/{slug}".format(slug=slug), "wb")
     f.write(content)
     f.close()
     connection.close()
@@ -251,16 +252,17 @@ def delete_article(article_id):
 
 def update_article(article_id, title=None, author=None, article_format=None, content=None):
     article = get_article_by_id(article_id)
+    charlotte_root = settings.get_charlotte_root()
 
     if title is None or title == article.title:
         slug = article.slug
     else:
         slug = updated_unique_slug(article_id, title)
         old_file = article.get_file_path()
-        os.rename(old_file, "articles/content/{slug}".format(slug=slug))
+        os.rename(old_file, charlotte_root / "articles/content/{slug}".format(slug=slug))
 
     if content is not None:
-        f = open("articles/content/{slug}".format(slug=slug), "wb")
+        f = open(charlotte_root / "articles/content/{slug}".format(slug=slug), "wb")
         f.write(content)
         f.close()
 
