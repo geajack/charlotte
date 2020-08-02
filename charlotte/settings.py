@@ -88,6 +88,9 @@ def get_config():
 
     return config
 
+def get_default_template_directory():
+    return pathlib.Path(__name__).parent / "themes/charlotte/templates"
+
 def get_charlotte_root():
     charlotte_root = pathlib.Path(".")
     environment_variable = os.environ.get("CHARLOTTE_ROOT")

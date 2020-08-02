@@ -10,18 +10,31 @@ class TemplateLoader(BaseLoader):
     def __init__(self):
         pass
 
-    def get_source(self, environment, name):
+    def get_source(self, environment, file_name):
+        source = None
+        template_path = None
+        do_use_cache = self.use_cache.__get__(self, TemplateLoader)
+        
         theme_folder = settings.get_theme_directory()
         if theme_folder is None:
-            raise TemplateNotFound(name)
+            raise TemplateNotFound(file_name)
 
-        template_path = theme_folder / "templates" / name
+        template_path = str(theme_folder / "templates" / file_name)
         
         try:
             with open(template_path) as f:
-                return f.read(), str(template_path), self.use_cache.__get__(self, TemplateLoader)
+                source = f.read()
         except FileNotFoundError:
-            raise TemplateNotFound(name)
+            pass
+
+        if source is None:
+            template_folder = settings.get_default_template_directory()
+            template_path = str(template_folder / file_name)
+            with open(template_path) as f:
+                source = f.read()
+
+        return source, template_path, do_use_cache
+
 
     def use_cache(self, path=None):
         return False
