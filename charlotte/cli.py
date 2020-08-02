@@ -1,6 +1,8 @@
 from pathlib import Path
 from shutil import copytree, copy
 
+import charlotte.articles
+
 def init(path):
     target = Path(path)
     resources_directory = Path(__file__).parent / "resources"
@@ -16,6 +18,8 @@ def init(path):
         src=resources_directory / "charlotte.config",
         dst=target
     )
+
+    charlotte.articles.initialize(path)
 
 def main():
     pass

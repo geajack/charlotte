@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from pathlib import Path
 from datetime import datetime
 
 import slugify
@@ -71,11 +72,10 @@ class Article:
             "content": Markup(self.get_content_html())
         }
 
-def initialize():
+def initialize(path):
     try:
-        charlotte_root = settings.get_charlotte_root()
-        (charlotte_root / "articles" / "content").mkdir(exist_ok=True, parents=True)
-        with sqlite3.connect(charlotte_root / "articles" / "database.db") as connection:
+        (Path(path) / "articles" / "content").mkdir(exist_ok=True, parents=True)
+        with sqlite3.connect(Path(path) / "articles" / "database.db") as connection:
             connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS articles
@@ -290,6 +290,3 @@ def update_article(article_id, title=None, author=None, article_format=None, con
         connection.commit()
     finally:
         connection.close()
-    
-
-initialize()
