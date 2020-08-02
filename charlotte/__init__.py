@@ -2,8 +2,11 @@ from flask import Flask
 from jinja2 import BaseLoader
 from jinja2.parser import Parser
 from jinja2.exceptions import TemplateNotFound
+from werkzeug.wsgi import DispatcherMiddleware
 
-application = Flask("Charlotte")
+from charlotte.client import application as client_app
+
+flask_app = Flask("Charlotte")
 
 class TemplateLoader(BaseLoader):
 
@@ -39,8 +42,19 @@ class TemplateLoader(BaseLoader):
     def use_cache(self, path=None):
         return False
 
-application.jinja_loader = TemplateLoader()
+flask_app.jinja_loader = TemplateLoader()
 
-app = application
+app = flask_app
+from charlotte import settings
+
+if settings.is_client_enabled():
+    application = DispatcherMiddleware(
+        flask_app,
+        {
+            "/admin": client_app
+        }
+    )
+else:
+    application = flask_app
 
 import charlotte.routes

@@ -8,7 +8,7 @@ def get_url(path):
     return "http://localhost:8000" + "/api/" +  path
 
 def get_articles(password):
-    response = requests.get(get_url("articles"), auth=HTTPBasicAuth("", password))
+    response = requests.get(get_url("articles"), auth=HTTPBasicAuth("", password), timeout=1.0)
     if response.status_code == 200:
         return response.json()
     elif response.status_code == 401:
@@ -26,15 +26,16 @@ def post_article(title, author, article_format, content, password):
             "author": author,
             "format": article_format
         },
-        files={"content": content}
+        files={"content": content},
+        timeout=1.0
     )
 
 def get_article(article_id, password):
-    response = requests.get(get_url("articles/%s" % article_id), auth=HTTPBasicAuth("", password))
+    response = requests.get(get_url("articles/%s" % article_id), auth=HTTPBasicAuth("", password), timeout=1.0)
     return response.json()
 
 def delete_article(article_id, password):
-    response = requests.delete(get_url("articles/%s" % article_id), auth=HTTPBasicAuth("", password))
+    response = requests.delete(get_url("articles/%s" % article_id), auth=HTTPBasicAuth("", password), timeout=1.0)
 
 def update_article(article_id, title, author, article_format, content, password):
     response = requests.patch(
@@ -49,5 +50,5 @@ def update_article(article_id, title, author, article_format, content, password)
     )
 
 def get_formats(password):
-    response = requests.get(get_url("formats"), auth=HTTPBasicAuth("", password))
+    response = requests.get(get_url("formats"), auth=HTTPBasicAuth("", password), timeout=1.0)
     return response.json()
