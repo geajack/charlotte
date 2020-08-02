@@ -1,5 +1,6 @@
 from pathlib import Path
 from shutil import copytree, copy
+from sys import argv
 
 import charlotte.articles
 
@@ -22,4 +23,5 @@ def init(path):
     charlotte.articles.initialize(path)
 
 def main():
-    pass
+    if argv[1] == "init":
+        init(".")
