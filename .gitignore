@@ -3,3 +3,5 @@
 database.db
 articles
 blog
+dist
+environment
