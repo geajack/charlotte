@@ -1,0 +1,8 @@
+#!/bin/bash
+
+rm -f dist/*
+rm -rf environment/*
+python3 setup.py sdist bdist_wheel
+virtualenv -p python3 environment
+source environment/bin/activate
+pip install dist/charlotte_blog-1.0.0-py3-none-any.whl
