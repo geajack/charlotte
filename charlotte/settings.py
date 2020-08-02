@@ -89,7 +89,7 @@ def get_config():
     return config
 
 def get_default_template_directory():
-    return pathlib.Path(__name__).parent / "themes/charlotte/templates"
+    return pathlib.Path(__file__).parent / "resources/themes/charlotte/templates"
 
 def get_charlotte_root():
     charlotte_root = pathlib.Path(".")
