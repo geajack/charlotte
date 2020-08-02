@@ -15,6 +15,17 @@ setuptools.setup(
     classifiers=[
     ],
     python_requires='>=3.6',
+    install_requires = [
+        "Click==7.0",
+        "Flask==1.0.2",
+        "itsdangerous==1.1.0",
+        "Jinja2==2.10",
+        "Markdown==3.0.1",
+        "MarkupSafe==1.1.0",
+        "pyyaml>=4.2b1",
+        "python-slugify==2.0.1",
+        "Werkzeug==0.14.1"
+    ]
 )
 
 rmtree("charlotte_blog.egg-info")
