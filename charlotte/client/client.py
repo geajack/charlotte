@@ -5,7 +5,7 @@ class UnauthorizedException(Exception):
     pass
 
 def get_url(path):
-    return "http://localhost:8000" + "/api/" +  path
+    return "http://localhost:8000" + "/blog/api/" +  path
 
 def get_articles(password):
     response = requests.get(get_url("articles"), auth=HTTPBasicAuth("", password), timeout=1.0)
@@ -14,8 +14,7 @@ def get_articles(password):
     elif response.status_code == 401:
         raise UnauthorizedException()
     else:
-        print(get_url("articles"))
-        print(response.status_code)
+        raise Exception()
 
 def post_article(title, author, article_format, content, password):
     response = requests.post(

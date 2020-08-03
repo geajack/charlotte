@@ -6,7 +6,7 @@ class RouteTable:
 
     def route(self, rule, *args, **kwargs):
         def decorator(function):
-            self.routes.append(Route([rule, None, function, *args], kwargs))
+            self.routes.append(Route([rule, function.__name__, function, *args], kwargs))
         return decorator
 
     def context_processor(self, function):
