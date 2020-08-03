@@ -4,7 +4,7 @@ from jinja2.parser import Parser
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.wsgi import DispatcherMiddleware
 
-from charlotte.client import application as client_app
+from charlotte.client import CharlotteWebClient
 
 flask_app = Flask("Charlotte")
 
@@ -51,7 +51,7 @@ if settings.is_client_enabled():
     application = DispatcherMiddleware(
         flask_app,
         {
-            "/admin": client_app
+            "/admin": CharlotteWebClient("http://localhost:8000/blog")
         }
     )
 else:
