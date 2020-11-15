@@ -2,9 +2,6 @@ from flask import Flask
 from jinja2 import BaseLoader
 from jinja2.parser import Parser
 from jinja2.exceptions import TemplateNotFound
-from werkzeug.wsgi import DispatcherMiddleware
-
-from charlotte.client import CharlotteWebClient
 
 flask_app = Flask("Charlotte")
 
@@ -45,16 +42,6 @@ class TemplateLoader(BaseLoader):
 flask_app.jinja_loader = TemplateLoader()
 
 app = flask_app
-from charlotte import settings
-
-if settings.is_client_enabled():
-    application = DispatcherMiddleware(
-        flask_app,
-        {
-            "/admin": CharlotteWebClient("http://localhost:8000/blog")
-        }
-    )
-else:
-    application = flask_app
+application = flask_app
 
 import charlotte.routes

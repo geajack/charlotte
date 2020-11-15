@@ -34,14 +34,6 @@ def is_password_correct(password):
         app.logger.error("Could not get password from charlotte.config file: {}".format(exception))
         return None
 
-def is_client_enabled():
-    try:
-        config = get_config()
-        return config["blog"]["web_client_enabled"]
-    except:
-        app.logger.error("Could not read 'Web Client' key in charlotte.config file")
-        return False
-
 def get_theme_directory():
     try:
         config = get_config()
