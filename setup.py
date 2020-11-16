@@ -31,7 +31,7 @@ setuptools.setup(
         "Click==7.0",
         "Flask==1.0.2",
         "itsdangerous==1.1.0",
-        "Jinja2==2.10",
+        "Jinja2==2.10.1",
         "Markdown==3.0.1",
         "MarkupSafe==1.1.0",
         "pyyaml>=4.2b1",
