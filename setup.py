@@ -36,7 +36,7 @@ setuptools.setup(
         "MarkupSafe==1.1.0",
         "pyyaml>=4.2b1",
         "python-slugify==2.0.1",
-        "Werkzeug==0.14.1"
+        "Werkzeug==0.15.3"
     ],
     entry_points = {
         "console_scripts": [
