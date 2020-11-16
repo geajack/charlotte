@@ -44,6 +44,3 @@ setuptools.setup(
         ]
     }
 )
-
-rmtree("charlotte_blog.egg-info")
-#rmtree("build")
